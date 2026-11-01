@@ -44,3 +44,12 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach { it.options.release = 25; it.options.encoding = 'UTF-8' }
 java { withSourcesJar(); sourceCompatibility = JavaVersion.VERSION_25; targetCompatibility = JavaVersion.VERSION_25 }
+
+// Keep generated private account credentials out of the sources JAR.
+// Include normal Java sources and static resources only.
+tasks.named('sourcesJar', Jar) {
+    setSource(files(
+        sourceSets.main.java,
+        fileTree('src/main/resources')
+    ))
+}
