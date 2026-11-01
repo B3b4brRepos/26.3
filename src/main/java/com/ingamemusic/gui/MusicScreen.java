@@ -671,7 +671,7 @@ public final class MusicScreen extends Screen {
 		int key = e.key();
 		EditBox f = activeField();
 		if (f != null && f.isFocused()) {
-			if (key == InputConstants.KEY_ENTER || key == InputConstants.KEY_KP_ENTER) {
+			if (key == 257 || key == 335) {
 				if (tab == Tab.SEARCH) runSearch(); else saveCookie();
 				return true;
 			}
