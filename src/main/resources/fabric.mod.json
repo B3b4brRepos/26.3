@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "ingamemusic",
+  "version": "${version}",
+  "name": "In-Game Music Player",
+  "description": "Search and play NetEase Cloud Music (and local files) with lyrics, in-game",
+  "authors": ["you"],
+  "license": "GPL-3.0-or-later",
+  "environment": "client",
+  "entrypoints": { "client": ["com.ingamemusic.IngameMusic"] },
+  "depends": {
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabricloader": ">=0.19.5",
+    "fabric-api": "*"
+  }
+}

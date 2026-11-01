@@ -1,0 +1,46 @@
+plugins {
+	id 'net.fabricmc.fabric-loom' version "${loom_version}"
+}
+version = project.mod_version + (project.hasProperty('build_number') ? "+b" + project.build_number : "")
+group = project.maven_group
+base { archivesName = project.archives_base_name }
+
+repositories { mavenCentral() }
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"   // 26.x is unobfuscated: Mojang names, no mappings line
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// MP3 decoder (pure Java) and QR code writer, bundled inside the mod jar (jar-in-jar)
+	implementation 'javazoom:jlayer:1.0.1'
+	include 'javazoom:jlayer:1.0.1'
+	implementation 'com.google.zxing:core:3.5.3'
+	include 'com.google.zxing:core:3.5.3'
+}
+
+// ---- Built-in NetEase account --------------------------------------------------------------------------------
+// If the environment variable NETEASE_COOKIE is set (GitHub: repo Settings > Secrets > NETEASE_COOKIE), its value is
+// written into the jar as assets/ingamemusic/account.txt and used when no cookie file exists. Never commit the cookie.
+def accountDir = layout.buildDirectory.dir('generated/account')
+tasks.register('writeBuiltInAccount') {
+	def out = accountDir.map { it.file('assets/ingamemusic/account.txt') }
+	def value = providers.environmentVariable('NETEASE_COOKIE').orElse('')
+	inputs.property('hasCookie', value.map { it.isEmpty() ? 'no' : 'yes' })
+	outputs.file(out)
+	doLast {
+		def f = out.get().asFile
+		f.parentFile.mkdirs()
+		f.text = value.get().trim()
+	}
+}
+sourceSets.main.resources.srcDir(accountDir)
+tasks.named('processResources') { dependsOn 'writeBuiltInAccount' }
+
+processResources {
+	inputs.property "version", project.version
+	filesMatching("fabric.mod.json") { expand "version": project.version }
+}
+
+tasks.withType(JavaCompile).configureEach { it.options.release = 25; it.options.encoding = 'UTF-8' }
+java { withSourcesJar(); sourceCompatibility = JavaVersion.VERSION_25; targetCompatibility = JavaVersion.VERSION_25 }
