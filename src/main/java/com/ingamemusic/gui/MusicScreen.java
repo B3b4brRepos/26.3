@@ -23,7 +23,7 @@ import net.minecraft.client.renderer.RenderPipelines;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
 import net.minecraft.util.FormattedCharSequence;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 
 /**
  * Full player. Immediate-mode UI: every frame draws widgets and registers click regions, so layout and hit-testing
@@ -671,17 +671,17 @@ public final class MusicScreen extends Screen {
 		int key = e.key();
 		EditBox f = activeField();
 		if (f != null && f.isFocused()) {
-			if (key == GLFW.GLFW_KEY_ENTER || key == GLFW.GLFW_KEY_KP_ENTER) {
+			if (key == InputConstants.KEY_ENTER || key == InputConstants.KEY_KP_ENTER) {
 				if (tab == Tab.SEARCH) runSearch(); else saveCookie();
 				return true;
 			}
-			if (key == GLFW.GLFW_KEY_ESCAPE) { f.setFocused(false); return true; }
+			if (key == InputConstants.KEY_ESCAPE) { f.setFocused(false); return true; }
 			return f.keyPressed(e);
 		}
-		if (key == GLFW.GLFW_KEY_ESCAPE || IngameMusic.KEY_OPEN.matches(e)) { onClose(); return true; }
-		if (key == GLFW.GLFW_KEY_SPACE) { pc.togglePause(); return true; }
-		if (key == GLFW.GLFW_KEY_LEFT) { pc.seek(pc.engine.position() - 5000); return true; }
-		if (key == GLFW.GLFW_KEY_RIGHT) { pc.seek(pc.engine.position() + 5000); return true; }
+		if (key == InputConstants.KEY_ESCAPE || IngameMusic.KEY_OPEN.matches(e)) { onClose(); return true; }
+		if (key == InputConstants.KEY_SPACE) { pc.togglePause(); return true; }
+		if (key == InputConstants.KEY_LEFT) { pc.seek(pc.engine.position() - 5000); return true; }
+		if (key == InputConstants.KEY_RIGHT) { pc.seek(pc.engine.position() + 5000); return true; }
 		return super.keyPressed(e);
 	}
 	@Override public boolean charTyped(CharacterEvent e) {

@@ -14,7 +14,7 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
+import com.mojang.blaze3d.platform.InputConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,11 +44,11 @@ public final class IngameMusic implements ClientModInitializer {
 		player = new PlayerController(config);
 		art = new ArtworkCache();
 
-		KEY_OPEN = key("open", GLFW.GLFW_KEY_M);
-		KEY_PLAY = key("play", GLFW.GLFW_KEY_UNKNOWN);
-		KEY_NEXT = key("next", GLFW.GLFW_KEY_UNKNOWN);
-		KEY_PREV = key("prev", GLFW.GLFW_KEY_UNKNOWN);
-		KEY_HUD = key("hud", GLFW.GLFW_KEY_UNKNOWN);
+		KEY_OPEN = key("open", InputConstants.KEY_M);
+		KEY_PLAY = key("play", -1);
+		KEY_NEXT = key("next", -1);
+		KEY_PREV = key("prev", -1);
+		KEY_HUD = key("hud", -1);
 
 		HudElementRegistry.attachElementAfter(VanillaHudElements.MISC_OVERLAYS, Identifier.fromNamespaceAndPath(ID, "hud"), new MiniHud());
 		HudElementRegistry.attachElementAfter(VanillaHudElements.MISC_OVERLAYS, Identifier.fromNamespaceAndPath(ID, "lyrics"), new LyricsHud());
